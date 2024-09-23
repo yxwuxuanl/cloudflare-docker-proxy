@@ -147,5 +147,5 @@ async function fetchToken(wwwAuthenticate, scope, authorization) {
   if (authorization) {
     headers.set("Authorization", authorization);
   }
-  return await fetch(url, { method: "GET", headers: headers });
+  return await fetch(url, { method: "GET", headers: headers, redirect: "follow" });
 }
