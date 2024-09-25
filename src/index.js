@@ -118,7 +118,23 @@ async function handleRequest(request) {
     headers: request.headers,
     redirect: "follow",
   });
-  return await fetch(newReq);
+
+  return await fetch(newReq).then(r => {
+    if (res.status === 401) {
+      let headers = new Headers()
+      headers.set(
+        "Www-Authenticate",
+        `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-docker-proxy"`
+      );
+
+      return new Response(JSON.stringify({ message: "UNAUTHORIZED" }), {
+        status: 401,
+        headers: headers,
+      })
+    }
+
+    return r
+  })
 }
 
 function parseAuthenticate(authenticateStr) {
