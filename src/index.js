@@ -120,8 +120,9 @@ async function handleRequest(request) {
   });
 
   return await fetch(newReq).then(r => {
-    if (res.status === 401) {
+    if (r.status === 401) {
       let headers = new Headers()
+
       headers.set(
         "Www-Authenticate",
         `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-docker-proxy"`
